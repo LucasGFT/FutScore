@@ -1,0 +1,8 @@
+node_modules
+tsconfig.json
+dist
+__tests__
+nyc.config.js
+.nyc_output
+.vscode
+coverage
