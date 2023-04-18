@@ -1,9 +1,7 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router';
 import { getApi } from '../api/apis';
-import InicialAdm from './InicialAdm';
-import verifyCargo from '../utils/verifyUser';
+import '../css/Times.css'
 
 function Times() {
     
@@ -12,7 +10,6 @@ function Times() {
 
     const getTimes = async () => {
         const { data } = await getApi('/times');
-        console.log(data)
         setTimes(data)
     }
 
@@ -23,6 +20,7 @@ function Times() {
 
     return(
         <div>
+            {times.length > 0 ? (
             <table>
                 <thead>
                     <tr>
@@ -42,7 +40,7 @@ function Times() {
                 </thead>
                 <tbody>
             { times.map((element, index) => (
-                    <tr key={index} onClick={() => push(`/times/${element.nome}`)}>
+                    <tr className='trTimes' key={index} onClick={() => push(`/times/${element.nome}`)}>
                         <td>{element.nome}</td>
                         <td>{element.estado}</td>
                         <td>{element.quantidadeJogadores}</td>
@@ -51,6 +49,7 @@ function Times() {
                     )) }
                     </tbody>
             </table>
+            ): <h5>Não possui nenhum time</h5>}
         </div>
     )
 }

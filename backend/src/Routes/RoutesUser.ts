@@ -3,8 +3,8 @@ import UserController from '../Controllers/users.controller';
 
 const routesUser = Router();
 
-routesUser.get('/user/:email', (req, res, next) => {
-  new UserController().getUser(req, res, next);
+routesUser.get('/user/:email', (req, res) => {
+  new UserController().getUser(req, res);
 });
 
 routesUser.post('/user/login', (req, res, next) => {

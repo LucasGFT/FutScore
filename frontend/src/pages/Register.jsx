@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router';
 import { getApi, postApi } from '../api/apis';
+import '../css/Register.css'
 
 
 function Register() {
@@ -32,25 +33,25 @@ function Register() {
     }
 
     return(
-        <div>
-            <h2>Register</h2>
-            <form>
-                <label>
+        <div id='divRegister' >
+            <h2 id='h2Register'>Register</h2>
+            <form className='formRegister'>
+                <label className='labelRegister' >
                     email:
-                    <input value={email} onChange={({target}) => setEmail(target.value)} type="email" placeholder="escreva seu email" />
+                    <input className='inputRegister' value={email} onChange={({target}) => setEmail(target.value)} type="email" placeholder="escreva seu email" />
                 </label>
-                <label>
+                <label className='labelRegister' >
                     senha:
-                    <input value={password} onChange={({target}) => setPassword(target.value)} type="password" placeholder="escreva sua senha" />
+                    <input className='inputRegister' value={password} onChange={({target}) => setPassword(target.value)} type="password" placeholder="escreva sua senha" />
                 </label>
-                <button type="button" onClick={() => {
+                <button id='buttonRegister' type="button" onClick={() => {
                     setEmailJaEmUso(false)
                     cadastrarNovoUser(email, password);
                     setEmail('');
                     setPassword('');
                     }}>Cadastrar</button>
             </form>
-            {(emailJaEmUso !== undefined && emailJaEmUso) && <h5>Esse email ja tem usuario</h5>}
+            {(emailJaEmUso !== undefined && emailJaEmUso) && <h5 id='h5Register'>Esse email ja tem usuario</h5>}
         </div>
     )
 }

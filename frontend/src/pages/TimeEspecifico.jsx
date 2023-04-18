@@ -1,9 +1,6 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router';
 import { getApi } from '../api/apis';
-import InicialAdm from './InicialAdm';
-import verifyCargo from '../utils/verifyUser';
 import { useParams } from 'react-router-dom';
 
 function TimeEspecifico() {

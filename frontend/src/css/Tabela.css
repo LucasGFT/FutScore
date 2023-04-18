@@ -1,0 +1,40 @@
+.divTabela {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 1rem;
+  }
+  
+  .thTabela, .tdTabela {
+    text-align: left;
+    padding: 8px;
+  }
+  
+  .thTabela {
+    background-color: #008080;
+    color: white;
+  }
+  
+  .trTabela:nth-child(even) {
+    background-color: #d9e6e6;
+  }
+  
+  .trTabela:hover {
+    background-color: #b3cccc;
+    cursor: pointer;
+  }
+  
+  .h2Tabela {
+    color: #008080;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: center;
+
+  }
+  .divTabela {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
+  

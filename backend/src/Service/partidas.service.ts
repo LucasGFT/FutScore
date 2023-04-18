@@ -1,6 +1,5 @@
 import { Schema } from 'mongoose';
 import PartidasDomains from '../Domains/Partidas';
-// import PartidasODM from '../Models/PartidasODM';
 import TimesODM from '../Models/TimesODM';
 import IPartidas from '../interfaces/IPartidas';
 import PartidasODM from '../Models/PartidasODM';
@@ -12,35 +11,20 @@ class PartidasService {
 
   public async findByTime() {
     const partidaODM = new PartidasODM();
-    const resultFind: IPartidas[] = await partidaODM.getAll();
-    const andamentos = resultFind.filter(partida => partida.comecou && !partida.terminou)
-    const terminadas = resultFind.filter(partida => partida.comecou && partida.terminou)
-    const naoComecou = resultFind.filter(partida => !partida.comecou)
-
-    const objResult = {
-      naoComecou,
-      andamentos,
-      terminadas,
-      }
-    return objResult
+    const objResult = await partidaODM.getPartidasByStatus();
+    return objResult;
   }
 
   public async atualizarPlacar(id: Schema.Types.ObjectId, objPlacar: { timeCasa: number, timeFora: number }) {
     const partidaODM = new PartidasODM()
-    try {
-      await partidaODM.updatedPlacar(id, objPlacar)
-    } catch (error) {
-      console.log(error)
-    }
+    const result = await partidaODM.updatedPlacar(id, objPlacar)
+    if (result === null) {return new Error('nao achou essa partida')}
   }
 
   public async atualizarStatus(id: Schema.Types.ObjectId,  key: string, value: boolean) {
     const partidaODM = new PartidasODM();
-    try {
-      await partidaODM.alterarStatusEspecifico(id, key, value)
-    } catch (error) {
-      console.log(error)
-    }
+    const result = await partidaODM.alterarStatusEspecifico(id, key, value)
+    if (result === null) { return new Error('nao achou essa partida') } 
   }
 
   public async updatedPontosStatus(id: Schema.Types.ObjectId) {
@@ -67,12 +51,12 @@ class PartidasService {
      }
   }
 
-  public async getPartidasTimeEspecifico(name: string) {
+  public async  getPartidasTimeEspecifico(name: string) {
     const partidasODM = new PartidasODM();
     const timesODM = new TimesODM();
     const time = await timesODM.findOne('nome', name)
-    const partidasTime = await partidasODM.findTime(name);
     if(time === null) throw new Error('Não Tem Esse Time')
+    const partidasTime = await partidasODM.findTime(name);
     return partidasTime
   }
 

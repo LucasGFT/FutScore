@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router';
-import verifyUser from '../utils/verifyUser';
 import verifyCargo from '../utils/verifyUser';
 import { getApi, postApi } from '../api/apis';
+import '../css/TimeRegister.css'
 
 
 
@@ -40,9 +40,7 @@ function CadastrarTime() {
                 quantidadeJogadores,
                 partidas: [],
             }
-        console.log(nomeEstadio)
         if (nomeEstadio !== '') objBody.estadio = nomeEstadio
-        console.log(objBody)
         await postApi('/times/register',  objBody, { timeout: 5000 })
         push('/inicial')
     };
@@ -59,40 +57,42 @@ function CadastrarTime() {
     }
 
     return(
-        <div>
-            { cargo === 'administrador' && (
+        <div id='divTimeRegister'>
+            { cargo === 'administrador' ? (
 
-                <><h2>Registrar Time</h2><form>
-                    <label>
+                <><h2 className='h2TimeRegister'>Registrar Time</h2><form id='formTimeRegister'>
+                    <label className='labelTimeRegister'>
                         nome:
-                        <input value={nome} onChange={({ target }) => setNome(target.value)} type="text" placeholder="escreva o nome do time" />
+                        <input className='inputTimeRegister' value={nome} onChange={({ target }) => setNome(target.value)} type="text" placeholder="escreva o nome do time" />
                     </label>
-                    <label>
+                    <label className='labelTimeRegister'>
                         estado:
-                        <select value={estadoSelecionado} onChange={({ target }) => setEstadoSelecionado(target.value)}>
+                        <select id='selectTimeRegister' value={estadoSelecionado} onChange={({ target }) => setEstadoSelecionado(target.value)}>
                             {arrayEstados.map((element) => (
                                 <option key={element} value={element}>{element}</option>
                             ))}
                         </select>
                     </label>
-                    <label>
+                    <label className='labelTimeRegister'>
                         Quantidade de jogadores:
-                        <input min="11" max="50" value={quantidadeJogadores} onChange={({ target }) => setQuantidadeJogadores(target.value)} type="number" placeholder="escreva quantidade de jogadores" />
+                        <input className='inputTimeRegister' min="11" max="50" value={quantidadeJogadores} onChange={({ target }) => setQuantidadeJogadores(target.value)} type="number" placeholder="escreva quantidade de jogadores" />
                     </label>
-                    <label>
+                    <label className='labelTimeRegister'>
                         possui estadio?
-                        <input type="radio" id="input1" name="estadio" onChange={() => setPossuiEstadio(true)} value="sim"></input>Sim
-                        <input type="radio" id="input2" name="estadio" onChange={() => setPossuiEstadio(false)} value="não"></input>Não
+                        <input className='inputTimeRegister' type="radio" id="input1" name="estadio" onChange={() => setPossuiEstadio(true)} value="sim"></input>Sim
+                        <input className='inputTimeRegister' type="radio" id="input2" name="estadio" onChange={() => setPossuiEstadio(false)} value="não"></input>Não
                     </label>
                     <br />
                     {possuiEstadio && (
-                        <label>
+                        <label className='labelTimeRegister'>
                             nome do estadio:
-                            <input value={nomeEstadio} onChange={({ target }) => setNomeEstadio(target.value)} type="text" placeholder="nome do estadio" />
+                            <input className='inputTimeRegister' value={nomeEstadio} onChange={({ target }) => setNomeEstadio(target.value)} type="text" placeholder="nome do estadio" />
                         </label>
                     )}
-                    <button onClick={post} type="button">Cadastrar</button>
+                    <button id='buttonTimeRegister' onClick={post} type="button">Cadastrar</button>
                 </form></> 
+                    ) : (
+                        <h2>Não tem Acesso</h2>
                     ) }
             { jaTemTime && <h3>Ja foi criado esse time</h3> }
         </div>

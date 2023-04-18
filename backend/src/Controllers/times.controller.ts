@@ -9,12 +9,12 @@ class TimesController {
     this.service = new TimesService();
   }
 
-  public async getTimes(_req: Request, res: Response, _next: NextFunction) {
+  public async getTimes(_req: Request, res: Response, next: NextFunction) {
     try {
       const times = await this.service.getTimes();
       return res.status(201).json(times);
     } catch (error) {
-      console.log(error);
+      next(error)
     }
   }
   

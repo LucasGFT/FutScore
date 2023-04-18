@@ -1,16 +1,14 @@
-import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { useHistory } from 'react-router';
 import InicialAdm from './InicialAdm';
 import verifyCargo from '../utils/verifyUser';
+import '../css/Inicial.css'
+
 
 function Inicial() {
 
     const { push } = useHistory();
-    const [email, setEmail] = useState('');
     const [cargo, setCargo] = useState('');
-    const [password, setPassword] = useState('');
-    const [emailJaEmUso, setEmailJaEmUso] = useState(false);
 
     const user = async () => {
         const result = await verifyCargo()
@@ -22,16 +20,17 @@ function Inicial() {
         user()
     }, [])
 
+    
     return(
-        <div>
+        <div className='divPrincipal'>
             <h2>Pagina Inicial</h2>
             { (cargo === 'administrador') ? (
             <InicialAdm />
             ) : (
-                <div>
-                    <h3 onClick={ () => push('/tabela') }>Ver tabelas</h3>
-                    <h3 onClick={ () => push('/partidas') }>Ver partidas</h3>
-                    <h3>Ver times</h3>
+                <div id='inicial'>
+                    <div onClick={ () =>  push('/tabela') }>Ver tabelas</div>
+                    <div onClick={ () =>  push('/partidas') }>Ver partidas</div>
+                    <div onClick={ () =>  push('/times') } >Ver times</div>
                 </div>
             ) }
         </div>

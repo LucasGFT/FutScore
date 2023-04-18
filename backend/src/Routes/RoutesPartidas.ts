@@ -8,7 +8,7 @@ routesPartidas.post('/partida/register', (req, res, next) => {
 });
 
 routesPartidas.get('/partida/status', (req, res, next) => {
-  new PartidasController().findStatusPartidas(req, res, next);
+  new PartidasController().findStatusPartidas(req, res);
 });
 
 routesPartidas.put('/partida/placar', (req, res, next) => {

@@ -1,35 +1,28 @@
 import { useHistory } from 'react-router';
+import '../css/InicialAdm.css'
 
 
 function InicialAdm() {
     const { push } = useHistory();
 
     return(
-        <div>
-            <div onClick={() => {
-                console.log('as')
-            }}>
-                <h2>Editar Times</h2>
+            <div className='container'>
+                <div onClick={() => push('/tabela')}>
+                    <p>Ver Tabelas</p>
+                </div>
+                <div onClick={() => push('register/times')}>
+                    <p>Cadastrar Times</p>
+                </div>
+                <div onClick={() => push('register/partidas')}>
+                    <p>Cadastrar partidas</p>
+                </div>
+                <div onClick={() => push('/partidas')}>
+                    <p>Ver partidas</p>
+                </div>
+                <div onClick={() => push('/times')}>
+                    <p>Ver times</p>
+                </div>
             </div>
-            <div onClick={() => push('/tabela')}>
-                <h2>Ver Tabelas</h2>
-            </div>
-            <div onClick={() => push('register/times')}>
-                Cadastrar Times
-            </div>
-            <br />
-            <br />
-            <br />
-            <div onClick={() => push('register/partidas')}>
-                Cadastrar partidas
-            </div>
-            <br />
-            <br />
-            <br />
-            <div onClick={() => push('partidas')}>
-                Ver partidas
-            </div>
-        </div>
     )
 }
 

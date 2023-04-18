@@ -1,10 +1,10 @@
-import axios from 'axios'
+import axios from "axios";
 
 const verifyUser = async () => {
     if(localStorage.getItem('user') !== null) {
         const { token, email, password } = JSON.parse(localStorage.getItem('user'));
         try {
-            const test = await axios.get(`http://localhost:3001/verifyjwt`, {
+            const test = await axios(`http://localhost:3001/verifyjwt`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }

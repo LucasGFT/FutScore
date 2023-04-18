@@ -1,9 +1,8 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router';
 import verifyUser from '../utils/verifyUser';
-import { getApi, postApi, putApi } from '../api/apis';
-
+import { getApi, postApi } from '../api/apis';
+import '../css/PartidaRegister.css'
 
 
 function CadastrarTime() {    
@@ -62,28 +61,28 @@ function CadastrarTime() {
     };
 
     return(
-        <div>
-            <h2>Registrar Partida</h2>
-            <form>
-                <label>
+        <div id='divPartidasRegister'>
+            <h2 id='h2PartidasRegister'>Registrar Partida</h2>
+            <form id='formPartidasRegister'>
+                <label className='labelPartidasRegister'>
                     Time Mandante:
-                    <select id="select1" name="select1" value={timeSelecionado1} onChange={handleTimeChange1}>
+                    <select className='selectPartidasRegister' id="select1" name="select1" value={timeSelecionado1} onChange={handleTimeChange1}>
                         <option value="">Selecione uma opção</option>
                         {opcoes1}
                     </select>
                 </label>
-                <label>
+                <label className='labelPartidasRegister'>
                     Time Visitante:
-                    <select id="select2" name="select2" value={timeSelecionado2} onChange={handleTimeChange2}>
+                    <select className='selectPartidasRegister' id="select2" name="select2" value={timeSelecionado2} onChange={handleTimeChange2}>
                         <option value="">Selecione uma opção</option>
                         {opcoes2}
                     </select>
                 </label>
-                <label>
+                <label className='labelPartidasRegister'>
                     Horario:
-                    <input min={new Date().toISOString().split("T")[0]} type='datetime-local' onChange={handleDate}></input>
+                    <input id='inputPartidaRegister' min={new Date().toISOString().split("T")[0]} type='datetime-local' onChange={handleDate}></input>
                 </label>
-                <button type='button' onClick={handleClickButton}>Criar Partida</button>
+                <button id='buttonPartidasRegister' type='button' onClick={handleClickButton}>Criar Partida</button>
             </form> 
             { messageRegistrar !== '' && (<h4>{messageRegistrar}</h4>) }
         </div>
