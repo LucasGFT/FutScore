@@ -9,10 +9,8 @@ services:
     working_dir: /app-frontend
     volumes: 
       - ./frontend:/app-frontend
-    # Os `healthcheck` devem garantir que a aplicação
-    # está operacional, antes de liberar o container
     healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3000"]  # Caso utilize outra porta interna para o front, altere ela aqui também
+      test: ["CMD", "lsof", "-t", "-i:3000"]
       timeout: 10s
       retries: 5
     networks:
@@ -23,11 +21,8 @@ services:
     ports:
       - "3001:3001"
     platform: linux/x86_64
-    # Caso queira que o container esteja atualizado durante o desenvolvimento, sem que você precise ficar fazendo down e up dos containers, descomente as 3 linhas abaixo
     working_dir: /app-backend
-    command: dev 
     depends_on:
-      # Precisa do mongo funcionando antes de subir o node
       - mongodb
     volumes:
       - ./backend:/app-backend
@@ -35,7 +30,7 @@ services:
       - NODE_ENV=development
       - MONGO_URI=mongodb://mongodb:27017/ProjectTest
     healthcheck:
-      test: ["CMD", "lsof", "-t", "-i:3001"] # Caso utilize outra porta interna para o back, altere ela aqui também
+      test: ["CMD", "lsof", "-t", "-i:3001"]
       timeout: 10s
       retries: 5
     networks:
@@ -49,8 +44,6 @@ services:
       - net
     ports:
       - 27017:27017
-      # Garanta que não haverá conflitos de porta com um mongodb que esteja
-      # rodando localmente
 
 
 networks:
