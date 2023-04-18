@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import PartidasService from '../Service/partidas.service';
-// import ITimes from '../interfaces/ITimes';
-// import Times from '../Domains/Times';
 import mongoose, { Schema, Types } from 'mongoose';
 import IPartidas from '../interfaces/IPartidas';
+import { nextTick } from 'process';
 
 class PartidasController {
   private service: PartidasService;
@@ -17,9 +16,9 @@ class PartidasController {
     const objGols = { timeCasa: golsTimeCasa, timeFora: golsTimeFora }
     try {
       await this.service.atualizarPlacar(id, objGols)
-      return res.status(201).json('deu')
+      return res.status(201).json()
     } catch (error) {
-      return res.status(400).json(error)
+      next(error)
     }
   }
 
@@ -27,9 +26,9 @@ class PartidasController {
     const { id } = req.body;
     try {
       await this.service.updatedPontosStatus(id);
-      return res.status(201).json('deu')
+      return res.status(201).json()
     } catch (error) {
-      console.log(error)
+      next(error)
     }
   }
 
@@ -37,16 +36,15 @@ class PartidasController {
     const {id, keyAtualizar, valorAtualizar} = req.body;
     try {
       await this.service.atualizarStatus(id, keyAtualizar, valorAtualizar)
-      return res.status(201).json('deu')
+      return res.status(201).json()
     } catch (error) {
-      return res.status(400).json(error)
+      next(error)
     }
   }
 
-  public async findStatusPartidas(req: Request, res: Response, next: NextFunction) {
-    const { timeCasaName, timeForaName } = req.body;
+  public async findStatusPartidas(_req: Request, res: Response) {
     const partidas = await this.service.findByTime();
-    return res.status(201).json(partidas);
+    return res.status(200).json(partidas);
   }
 
   public async create(req: Request, res: Response, next: NextFunction) {
@@ -57,22 +55,18 @@ class PartidasController {
     try {
       const newPartida = await this.service.createPartidas(obj);
       return res.status(201).json(newPartida);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        return res.status(400).json(error.message);
-      } else {
-        return res.status(400).json("Ocorreu um erro desconhecido");
-      }
+    } catch (error) {
+      next(error)
     }
   }
 
-  public async getPartidasTimeEspecifico(req: Request, res: Response, _next: NextFunction) {
+  public async getPartidasTimeEspecifico(req: Request, res: Response, next: NextFunction) {
     const { time } = req.params;
     try {
       const partidasTime = await this.service.getPartidasTimeEspecifico(time);
       return res.status(201).json(partidasTime);
-    } catch (error: any) {
-      return res.status(400).json(error.message)
+    } catch (error) {
+      next(error)
     }
   }
 

@@ -1,27 +1,36 @@
 import mongoose, { Schema, Model, models, model } from 'mongoose';
 import IPartidas from '../interfaces/IPartidas';
+import PartidasODM from './PartidasODM';
 
 class AbstractODM<T> {
   private schema: Schema;
   private model: Model<T>;
+  private modelPartidas: Model<IPartidas>;
   constructor(schema: Schema, documentModel: string) {
     this.schema = schema;
     this.model = models[documentModel] || model(documentModel, this.schema);
+    this.modelPartidas = models[documentModel] || model(documentModel, this.schema);
   }
 
   public async create(user: T): Promise<T> {
     return this.model.create({ ...user });
   }
 
+  public async insertMany(key: T[]) {
+    await this.model.insertMany(key)
+  }
+
   public async alterarStatusEspecifico(id: Schema.Types.ObjectId, key: string, value: boolean) {
     const query = {
       [key]: value,
     }
-    await this.model.findOneAndUpdate({_id: id}, query)
+    const find = await this.model.findOneAndUpdate({_id: id}, query)
+    return find
   }
 
   public async updatedPlacar(id: mongoose.Schema.Types.ObjectId, objPlacar: { timeCasa: number, timeFora: number }) {
-    await this.model.findOneAndUpdate({ _id: id }, { golsTimeCasa: objPlacar.timeCasa, golsTimeFora: objPlacar.timeFora });
+    const find = await this.model.findOneAndUpdate({ _id: id }, { golsTimeCasa: objPlacar.timeCasa, golsTimeFora: objPlacar.timeFora });
+    return find;
   }
 
   public async findOne(key: any, value: string | Schema.Types.ObjectId) {
@@ -62,7 +71,8 @@ class AbstractODM<T> {
   }
 
   public async findPontosStatus(id: Schema.Types.ObjectId) {
-    const partida = await this.model.findById({ _id: id }).exec() as IPartidas | null;
+    const partida = await this.model.findById({ _id: id }) as IPartidas | null;
+    // estava assim : const partida = await this.model.findById({ _id: id }).exec() as IPartidas | null;
     const obj = {
       vitoria: '',
       derrota: '',
@@ -96,6 +106,19 @@ class AbstractODM<T> {
 
   public async getAll() {
     return this.model.find({});
+  }
+
+  public async getPartidasByStatus() {
+    const partidas: IPartidas[] = await this.modelPartidas.find({})
+    const andamentos = partidas.filter(partida => partida.comecou && !partida.terminou)
+    const terminadas = partidas.filter(partida => partida.comecou && partida.terminou)
+    const naoComecou = partidas.filter(partida => !partida.comecou)
+    const objResult = {
+      naoComecou,
+      andamentos,
+      terminadas,
+      }
+      return objResult
   }
 }
 

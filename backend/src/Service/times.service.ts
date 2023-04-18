@@ -22,11 +22,7 @@ class TimesService {
       const newTime = await timeODM.create(times);
       return this.createTimesDomains(newTime);
     } catch (error: unknown) {
-      if (error instanceof Error) {
         throw new Error('Esse time ja foi criado')
-      } else {
-        throw new Error('Ocorreu um erro desconhecido')
-      }
     }
   } 
 

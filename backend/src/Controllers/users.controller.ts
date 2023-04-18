@@ -8,7 +8,7 @@ class UserController {
     this.service = new UserService();
   }
 
-  public async create(req: Request, res: Response, _next: NextFunction) {
+  public async create(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body;
     const user = {
       email, password,
@@ -17,11 +17,11 @@ class UserController {
       const newUser = await this.service.createUser(user);
       return res.status(201).json({ token: newUser });
     } catch (error) {
-      console.log(error);
+      next(error)
     }
   }
 
-  public async getUser(req: Request, res: Response, _next: NextFunction) {
+  public async getUser(req: Request, res: Response) {
     const { email } = req.params;
     const resultUser = await this.service.getUsers(email);
     if (resultUser === null) return res.status(202).json(false);

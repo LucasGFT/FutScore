@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useHistory } from 'react-router';
 import { postApi } from '../api/apis';
-// import useLocalStorage from '../hooks/useLocalStorage';
+import '../css/Login.css'
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -28,33 +28,36 @@ function Login() {
   }
 
   return (
-    <div>
-      <h1>nome app</h1>
-      <form>
-      <label>
-        Email:
-        <input
-        onChange={({ target }) => setEmail(target.value)}
-        value={email}
-        type="email"
-        placeholder="teste@teste.com"
-        />
-      </label>
-      <label>
-        Senha:
-        <input
-        value={password}
-        onChange={({ target }) => setPassword(target.value)}
-        type="password"/>
-      </label>
-      <button
-      type="button"
-      onClick={()=> handleClick()}>
-        Fazer Login
-      </button>
+    <div id='divLogin'>
+      <h1 id='nomeProject'>FutScore</h1>
+      <form id='formLogin'>
+        <label className='labelLogin'>
+          Email:
+          <input
+          className='inputLogin'
+          onChange={({ target }) => setEmail(target.value)}
+          value={email}
+          type="email"
+          placeholder="teste@teste.com"
+          />
+        </label>
+        <label className='labelLogin'>
+          Senha:
+          <input
+          className='inputLogin'
+          value={password}
+          onChange={({ target }) => setPassword(target.value)}
+          type="password"/>
+        </label>
+        <button
+        type="button"
+        id='buttonLogin'
+        onClick={()=> handleClick()}>
+          Fazer Login
+        </button>
       </form>
       { mensagemErroLogin && <h5>{mensagemErroLogin}</h5> }
-      <button type="button" onClick={ () => push('/register')} >Ainda não tem cadastro</button>
+      <button id='buttonParaRegister'  type="button" onClick={ () => push('/register')} >Ainda não tem cadastro</button>
     </div>
   );
 }

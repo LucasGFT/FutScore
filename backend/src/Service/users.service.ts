@@ -44,8 +44,7 @@ class UserService {
   public async findUser(email: string, password: string) {
     const userODM = new UsersODM();
     const resultUser = await userODM.findByEmail(email);
-    if (resultUser === null) return false;
-    if(resultUser.password !== password) return false
+    if (resultUser === null || resultUser.password !== password) return false;
     const userToken = { email: resultUser.email, password: resultUser.password, cargo: resultUser.cargo };
     const token = gnToken(userToken);
     return token;

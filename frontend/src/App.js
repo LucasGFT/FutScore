@@ -1,16 +1,17 @@
 import './App.css';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Login from './pages/Login';
-import TimesRegister from './pages/TimesRegister';
-import PartidasRegister from './pages/PartidasRegister';
-import Partidas from './pages/Partidas';
-import Register from './pages/Register';
-import Tabela from './pages/Tabela';
-import Inicial from './pages/Inicial';
-import Times from './pages/Times';
-import TimeEspecifico from './pages/TimeEspecifico';
+import Login from './pages/Login.jsx';
+import TimesRegister from './pages/TimesRegister.jsx';
+import PartidasRegister from './pages/PartidasRegister.jsx';
+import Partidas from './pages/Partidas.jsx';
+import Register from './pages/Register.jsx';
+import Tabela from './pages/Tabela.jsx';
+import Inicial from './pages/Inicial.jsx';
+import Times from './pages/Times.jsx';
+import TimeEspecifico from './pages/TimeEspecifico.jsx';
 
 function App() {
+  document.title = 'FutScore'
   return (
     <div>
       <Switch>

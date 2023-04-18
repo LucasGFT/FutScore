@@ -1,11 +1,8 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router';
-import verifyUser from '../utils/verifyUser';
-import AlterarPlacar from '../components/AlterarPlacar';
 import { getApi, putApi } from '../api/apis';
-import { calcularPontuacao } from '../utils/CalcularPontuacao';
 import verifyCargo from '../utils/verifyUser';
+import '../css/Partidas.css'
 
 
 
@@ -13,6 +10,7 @@ function CadastrarTime() {
     const { push } = useHistory();
     const [allPartidas, setAllPartidas] = useState();
     const [partidasNaoComecou, setPartidasNaoComecou] = useState({});
+    const [naoTemUmaPartida, setNaoTemUmaPartida] = useState(true);
     const [partidasAndamento, setPartidasAndamento] = useState({});
     const [partidasTerminou, setPartidasTerminou] = useState({});
     const [mostrarAlterarPlacar, setMostrarAlterarPlacar] = useState(false)
@@ -77,6 +75,8 @@ function CadastrarTime() {
 
     const getPartidas = async () => {
         const { data } = await getApi(urlStatusPartida)
+        const arrays = Object.values(data);
+        if (arrays[0].length !== 0 || arrays[1].length !== 0 || arrays[2].length !== 0) setNaoTemUmaPartida(false)
         setAllPartidas(data)
         setPartidasNaoComecou(data.naoComecou)
         setPartidasAndamento(data.andamentos)
@@ -108,12 +108,12 @@ function CadastrarTime() {
                                 {partidasNaoComecou.map((element, index) => {
                                     const data = new Date(element.horario);
                                     return (
-                                        <tr key={index}>
+                                        <tr className='trPagina' key={index}>
                                             <td>{element.timeCasaName}</td>
                                             <td>{element.timeForaName}</td>
                                             <td>{data.toLocaleString()}</td>
                                             { cargo === 'administrador' && (
-                                                <td><button type="button" onClick={() => {
+                                                <td><button id='buttonComecarPartidas' type="button" onClick={() => {
                                                     atualizarStatus(element._id, 'comecou', true);
                                                     removerPartidaNaoComecouDoSetState(element)
                                                     }}>Comecar Partida</button></td>
@@ -137,27 +137,28 @@ function CadastrarTime() {
                                     <th>
                                         Time Visitante
                                     </th>
+                                    {/* <th> </th> */}
                                 </tr>
                             </thead>
                             <tbody>
                                 {partidasAndamento.map((element, index) => {
                                     return (
-                                        <tr key={index}>
+                                        <tr className='trPagina' key={index}>
                                             <td>{element.timeCasaName}</td>
                                             <td id="placarEmAndamento">{`${element.golsTimeCasa} x ${element.golsTimeFora}`}</td>
                                             <td>{element.timeForaName}</td>
                                             { cargo === 'administrador' && (<>
                                             <td>
-                                                <button onClick={() => handleClickButton(index)}>AlterarPlacar</button>
+                                                <button id='btnAlterarPlacar' onClick={() => handleClickButton(index)}>AlterarPlacar</button>
                                                 {mostrarAlterarPlacar && indexMostrarAlterar === index && (
-                                                    <div>
+                                                    <div id='inputsTrocaPlacar' >
                                                         <input type="number"></input>
                                                         <input type="number"></input>
                                                         <button onClick={(event) => trocarPlacar(event, element)}>Trocar</button>
                                                     </div>
                                                 )}
                                             </td>
-                                                <td><button type="button" onClick={async () => {
+                                                <td><button id='btnTerminarPartida' type="button" onClick={async () => {
                                                     atualizarStatus(element._id, 'terminou', true);
                                                     removerPartidaAndamentoDoSetState(element);
                                                     await atualizarGanhoPartida(element._id)
@@ -192,7 +193,7 @@ function CadastrarTime() {
                                 {partidasTerminou.map((element, index) => {
                                     const data = new Date(element.horario);
                                     return (
-                                        <tr key={index}>
+                                        <tr className='trPagina' key={index}>
                                             <td>{element.timeCasaName}</td>
                                             <td>{element.timeForaName}</td>
                                             <td>{data.toLocaleString()}</td>
@@ -203,6 +204,9 @@ function CadastrarTime() {
                             </tbody>
                         </table></>
                         )}
+                        { naoTemUmaPartida && (
+                        <h2>Não tem nenhuma partida salva</h2>
+                    ) }
             </div>
             ) : (
                 <p>Carregando...</p>
